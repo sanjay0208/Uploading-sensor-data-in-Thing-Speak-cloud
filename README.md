@@ -61,10 +61,73 @@ Automatically act on your data and communicate using third-party services like T
 
 
 # PROGRAM:
+~~~
+/*
+Program to monitor the distance of the obstacle using an Ultrasonic sensor and uploading the data in the Thing speak using an ESP32 controller
+Developed by: Issac. J
+RegisterNumber:  212220040054
+*/
+
+#include "ThingSpeak.h"
+#include <WiFi.h>
+
+char ssid[] = "xxx"; //SSID
+char pass[] = "xxx"; // Password
+
+
+const int trigger = 25;
+const int echo = 26;
+long T;
+float distanceCM;
+WiFiClient  client;
+
+unsigned long myChannelField = xxxxxxx; // Channel ID
+const int ChannelField = 1; // Which channel to write data
+const char * myWriteAPIKey = "xxxxxxxxxxxxxx"; // Your write API Key
+
+void setup()
+{
+  Serial.begin(115200);
+  pinMode(trigger, OUTPUT);
+  pinMode(echo, INPUT);
+  WiFi.mode(WIFI_STA);
+  ThingSpeak.begin(client);
+}
+void loop()
+{
+  if (WiFi.status() != WL_CONNECTED)
+  {
+    Serial.print("Attempting to connect to SSID: ");
+    Serial.println(ssid);
+    while (WiFi.status() != WL_CONNECTED)
+    {
+      WiFi.begin(ssid, pass);
+      Serial.print(".");
+      delay(5000);
+    }
+    Serial.println("\nConnected.");
+  }
+  digitalWrite(trigger, LOW);
+  delay(1);
+  digitalWrite(trigger, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigger, LOW);
+  T = pulseIn(echo, HIGH);
+  distanceCM = T * 0.034;
+  distanceCM = distanceCM / 2;
+  Serial.print("Distance in cm: ");
+  Serial.println(distanceCM);
+  ThingSpeak.writeField(myChannelField, ChannelField, distanceCM, myWriteAPIKey);
+  delay(1000);
+}
+
+~~~
 
 # CIRCUIT DIAGRAM:
+![image](https://github.com/sanjay0208/Uploading-sensor-data-in-Thing-Speak-cloud/assets/119406959/e773f69d-1382-4c61-bcf5-fcc51a05c0aa)
 
 # OUTPUT:
+![image](https://github.com/sanjay0208/Uploading-sensor-data-in-Thing-Speak-cloud/assets/119406959/cddbcb3c-8377-45f8-81b5-820529bee2dd)
 
 # RESULT:
 Thus the distance of the obstacle was monitored using Ultrasonic sensor and the distance values are uploaded in the Thing speak using ESP32 controller.

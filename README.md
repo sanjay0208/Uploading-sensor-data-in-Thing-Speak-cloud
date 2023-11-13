@@ -62,12 +62,6 @@ Automatically act on your data and communicate using third-party services like T
 
 # PROGRAM:
 ~~~
-/*
-Program to monitor the distance of the obstacle using an Ultrasonic sensor and uploading the data in the Thing speak using an ESP32 controller
-Developed by: Issac. J
-RegisterNumber:  212220040054
-*/
-
 #include "ThingSpeak.h"
 #include <WiFi.h>
 
